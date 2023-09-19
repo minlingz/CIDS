@@ -1,7 +1,4 @@
-import pandas as pd
-import pytest
 import os
-
 from ds import pandas_ds
 
 
