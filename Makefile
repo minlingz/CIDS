@@ -5,7 +5,7 @@ install:
 	pip install -r requirements.txt
 
 test:
-	#test goes here
+	pytest test_ds.py
 
 format:	
 	black .
