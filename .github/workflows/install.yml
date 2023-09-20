@@ -1,4 +1,4 @@
-name: Python package
+name: Install
 
 on: [push]
 
@@ -18,12 +18,4 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: make install
-          
-      - name: Lint with ruff
-        run: make lint
 
-      - name: Test with pytest
-        run: make test
-          
-      - name: Format with black
-        run: make format
