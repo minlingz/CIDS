@@ -18,38 +18,33 @@ Continuous Integration using GitHub Actions of Python Data Science Project
 * `lint.yml` -- GitHub Action workflow step - lint with ruff
 * `test.yml` -- GitHub Action workflow step - test using pytest
 
-## GitHub Action workflow
+## GitHub Action Workflow
 
-* Install
-```
-- name: Install dependencies
-    run: make install
-```
-* Format
-```
-- name: Install black
-    run: pip install black
-- name: Format with black
-    run: make format
-```
-* Lint
-```
-- name: Install ruff
-    run: pip install ruff    
-- name: Lint with ruff
-    run: make lint
-```
-* Test
-```
-- name: Install dependency
-    run: pip install -r requirements.txt
-- name: Test with pytest
-run: make test
+```Makefile
+install:
+	python -m pip install --upgrade pip
+	pip install ruff
+	pip install black
+	pip install -r requirements.txt
+
+test:
+	pytest test_lib.py
+	pytest test_ds.py
+	py.test --nbval ds.ipynb
+	
+format:	
+	black .
+
+lint:
+# stop the build if there are Python syntax errors or undefined names
+	ruff --format=github --select=E9,F63,F7,F82 --target-version=py37 .
+# default set of ruff rules with GitHub Annotations
+	ruff --format=github --target-version=py37 .
 ```
 
 ## Python code and Jupyter notebook
 
-* Common code between the python script and Jupiter notebook - `lib.py`
+### Common code between the python script and Jupiter notebook - `lib.py`
 ```python
 def read_csv_file(file_name):
     """Read csv file and return data"""
@@ -59,27 +54,48 @@ def generate_statistics_summary(data):
     """Generate statistics summary"""
 ```
 
-* Descriptive statistics python script using Pandas - `ds.py`
+### Descriptive statistics python script using Pandas - `ds.py`
 ```python
-# convert column to integer
-    data["gdppcap08"] = data["gdppcap08"].astype("int")
-```
-```python
-# scatter plot visualization
+def pandas_ds():
+    """Read csv file,
+    generate statistics summary
+        and plot interested columns"""
+
+    # Read csv file
+    data = lib.read_csv_file("world-small.csv")
+    ...
+    # scatter plot visualization and save it as "plot.png" file
     data.plot.scatter(x="gdppcap08", y="polityIV", alpha=0.5)
     plt.savefig("plot.png")
+    ...
+    # return statistics summary for the function
+    summary = lib.generate_statistics_summary(data[["gdppcap08", "polityIV"]])
+    print(summary)
+    return summary
 ```
 
-* Descript statistics Jupiter notebook - `ds.ipynb`
+### Descript statistics Jupiter notebook - `ds.ipynb`
 ```python
+# Read csv file
+data = lib.read_csv_file("world-small.csv")
+...
+# scatter plot visualization
 data.plot.scatter(x="gdppcap08", y="polityIV", alpha=0.5)
 plt.savefig("plot.png")
 plt.show()
+...
 ```
+![Alt text](plot.png)
 
+```python
+# return statistics summary
+summary = lib.generate_statistics_summary(data[["gdppcap08", "polityIV"]])
+...
+```
+![Alt text](ds.png)
 ## Test
 
-* Test common code - `test_lib.py`
+### Test common code - `test_lib.py`
 ```python
 def test_read_csv_file():
     """Check if the DataFrame not empty"""
@@ -97,7 +113,7 @@ def test_generate_statistics_summary():
     assert "50%" in summary.index
 ```
 
-* Test descriptive statistics python script - `test_ds.py`
+### Test descriptive statistics python script - `test_ds.py`
 ```python
 def test_pandas_ds():
     """Check if the summary DataFrame has the expected mean row"""
@@ -112,7 +128,7 @@ def test_save_plot():
     assert os.path.isfile("plot.png")
 ```
 
-* Test Jupiter notebook
+### Test Jupiter notebook using nbval plugin
 ```
 py.test --nbval ds.ipynb
 ```

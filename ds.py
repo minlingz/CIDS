@@ -6,6 +6,10 @@ import lib
 
 
 def pandas_ds():
+    """Read csv file,
+    generate statistics summary
+        and plot interested columns"""
+
     # Read csv file
     data = lib.read_csv_file("world-small.csv")
     # convert column to integer
