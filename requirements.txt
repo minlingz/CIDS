@@ -1,4 +1,3 @@
-flask
 pytest
 black==23.3.0
 ruff==0.0.285

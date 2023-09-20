@@ -5,8 +5,9 @@ install:
 	pip install -r requirements.txt
 
 test:
+	pytest test_lib.py
 	pytest test_ds.py
-
+	
 format:	
 	black .
 
