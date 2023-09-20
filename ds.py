@@ -17,7 +17,9 @@ def pandas_ds():
     # plt.show()
 
     # return statistics summary
-    return lib.generate_statistics_summary(data[["gdppcap08", "polityIV"]])
+    summary = lib.generate_statistics_summary(data[["gdppcap08", "polityIV"]])
+    print(summary)
+    return summary
 
 
 if __name__ == "__main__":

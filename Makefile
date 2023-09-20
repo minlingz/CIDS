@@ -7,6 +7,7 @@ install:
 test:
 	pytest test_lib.py
 	pytest test_ds.py
+	py.test --nbval ds.ipynb
 	
 format:	
 	black .

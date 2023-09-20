@@ -1,4 +1,5 @@
 pytest
+nbval==0.9.6
 black==23.3.0
 ruff==0.0.285
 numpy==1.25.2
