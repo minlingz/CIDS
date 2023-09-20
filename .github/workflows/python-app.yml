@@ -22,7 +22,7 @@ jobs:
       - name: Lint with ruff
         run: make lint
 
-      - name: test with pytest
+      - name: Test with pytest
         run: make test
           
       - name: Format with black
